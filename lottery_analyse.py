@@ -3,23 +3,24 @@ import os
 import re
 from threading import Thread
 from bs4 import BeautifulSoup
+import time
 ua_agent = {'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'}
 xua_agent = {'Referer':'http://zx.500.com/openplatform/n_1/2017/1127/a62aade1e0954398c32f6f090f50ee1b.shtml','User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'}
 article_list = []
 def write_article():
-	if not os.path.exists('/Users/xiejunjie/py-exam/lottery/lottery_analyse.ini'):
-		with open('/Users/xiejunjie/py-exam/lottery/lottery_analyse.ini','w') as f:
-			with open('/Users/xiejunjie/py-exam/lottery/lottery_analyse.txt','w') as g:
+	if not os.path.exists('/Users/xiejunjie/py/lottery/lottery_analyse.ini'):
+		with open('/Users/xiejunjie/py/lottery/lottery_analyse.ini','w') as f:
+			with open('/Users/xiejunjie/py/lottery/lottery_analyse.txt','w') as g:
 				for article in article_list:
 					f.write(article[2]+'\n')
 					g.write(article[0]+'\n')
 					g.write(article[1]+'\n')
 					g.write(article[2]+'\n')
-					g.write(article[4]+'\n')
+					g.write('\033[34;47m' + article[4] + '\033[0m'+'\n')
 					g.write('\n\n\n\n')
 	else:
-		with open('/Users/xiejunjie/py-exam/lottery/lottery_analyse.ini','r+') as f:
-			with open('/Users/xiejunjie/py-exam/lottery/lottery_analyse.txt','a') as g:
+		with open('/Users/xiejunjie/py/lottery/lottery_analyse.ini','r+') as f:
+			with open('/Users/xiejunjie/py/lottery/lottery_analyse.txt','a') as g:
 				read_list = f.read().split('\n')[0:-1]
 				existed = -1
 				for article in article_list:
@@ -31,7 +32,7 @@ def write_article():
 						g.write(article[0]+'\n')
 						g.write(article[1]+'\n')
 						g.write(article[2]+'\n')
-						g.write(article[4]+'\n')
+						g.write('\033[34;47m' + article[4] + '\033[0m'+'\n')
 						g.write('\n\n\n\n')
 						f.write(article[2]+'\n')
 					existed = -1
@@ -79,7 +80,7 @@ def get_detail(fid):
 	return contents
 def main():
 	threads = []
-	for i in range(10):
+	for i in range(6):
 		url = "http://zx.500.com/ajax.php?pageCount=%d&sortid=1&type=news"%(i)
 		threads.append(Thread(target = down_analyse,args=(url,)))
 	for th in threads:
